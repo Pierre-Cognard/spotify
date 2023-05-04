@@ -20,5 +20,4 @@ public class _MusicServerPrxI extends com.zeroc.Ice._ObjectPrxI implements Music
 {
     /** @hidden */
     public static final long serialVersionUID = 0L;
-
 }

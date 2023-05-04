@@ -15,8 +15,6 @@
 
 package org.example.MusicManager;
 
-import java.util.ArrayList;
-
 public interface MusicServer extends com.zeroc.Ice.Object
 {
     Music searchMusic(String title, String artist, com.zeroc.Ice.Current current);
@@ -27,8 +25,11 @@ public interface MusicServer extends com.zeroc.Ice.Object
 
     boolean modifyMusic(Music music, com.zeroc.Ice.Current current);
 
-    String getMusicStream(String title, String artist);
-    ArrayList<Music> musicList();
+    String getMusicStream(Music music, com.zeroc.Ice.Current current);
+
+    void getMusicList(com.zeroc.Ice.Current current);
+
+    void stopMusic(com.zeroc.Ice.Current current);
 
     /** @hidden */
     static final String[] _iceIds =
@@ -142,17 +143,71 @@ public interface MusicServer extends com.zeroc.Ice.Object
         return inS.setResult(ostr);
     }
 
+    /**
+     * @hidden
+     * @param obj -
+     * @param inS -
+     * @param current -
+     * @return -
+    **/
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_getMusicStream(MusicServer obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        com.zeroc.Ice.InputStream istr = inS.startReadParams();
+        Music iceP_music;
+        iceP_music = Music.ice_read(istr);
+        inS.endReadParams();
+        String ret = obj.getMusicStream(iceP_music, current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeString(ret);
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
+    }
+
+    /**
+     * @hidden
+     * @param obj -
+     * @param inS -
+     * @param current -
+     * @return -
+    **/
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_getMusicList(MusicServer obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        inS.readEmptyParams();
+        obj.getMusicList(current);
+        return inS.setResult(inS.writeEmptyParams());
+    }
+
+    /**
+     * @hidden
+     * @param obj -
+     * @param inS -
+     * @param current -
+     * @return -
+    **/
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_stopMusic(MusicServer obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        inS.readEmptyParams();
+        obj.stopMusic(current);
+        return inS.setResult(inS.writeEmptyParams());
+    }
+
     /** @hidden */
     final static String[] _iceOps =
     {
         "addMusic",
+        "getMusicList",
+        "getMusicStream",
         "ice_id",
         "ice_ids",
         "ice_isA",
         "ice_ping",
         "modifyMusic",
         "removeMusic",
-        "searchMusic"
+        "searchMusic",
+        "stopMusic"
     };
 
     /** @hidden */
@@ -174,31 +229,43 @@ public interface MusicServer extends com.zeroc.Ice.Object
             }
             case 1:
             {
-                return com.zeroc.Ice.Object._iceD_ice_id(this, in, current);
+                return _iceD_getMusicList(this, in, current);
             }
             case 2:
             {
-                return com.zeroc.Ice.Object._iceD_ice_ids(this, in, current);
+                return _iceD_getMusicStream(this, in, current);
             }
             case 3:
             {
-                return com.zeroc.Ice.Object._iceD_ice_isA(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_id(this, in, current);
             }
             case 4:
             {
-                return com.zeroc.Ice.Object._iceD_ice_ping(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_ids(this, in, current);
             }
             case 5:
             {
-                return _iceD_modifyMusic(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_isA(this, in, current);
             }
             case 6:
             {
-                return _iceD_removeMusic(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_ping(this, in, current);
             }
             case 7:
             {
+                return _iceD_modifyMusic(this, in, current);
+            }
+            case 8:
+            {
+                return _iceD_removeMusic(this, in, current);
+            }
+            case 9:
+            {
                 return _iceD_searchMusic(this, in, current);
+            }
+            case 10:
+            {
+                return _iceD_stopMusic(this, in, current);
             }
         }
 

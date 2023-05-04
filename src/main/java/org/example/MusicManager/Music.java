@@ -19,28 +19,43 @@ public class Music implements java.lang.Cloneable,
                               java.io.Serializable
 {
     public String title;
+
     public String artist;
-    public String album;
-    public int year;
-    public String genre;
+
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String toString() {
+        return "Music{" +
+                "title='" + title + '\'' +
+                ", artist='" + artist + '\'' +
+                ", path='" + path + '\'' +
+                '}';
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
     public String path;
 
     public Music()
     {
         this.title = "";
         this.artist = "";
-        this.album = "";
-        this.genre = "";
         this.path = "";
     }
 
-    public Music(String title, String artist, String album, int year, String genre, String path)
+    public Music(String title, String artist, String path)
     {
         this.title = title;
         this.artist = artist;
-        this.album = album;
-        this.year = year;
-        this.genre = genre;
         this.path = path;
     }
 
@@ -72,24 +87,6 @@ public class Music implements java.lang.Cloneable,
                     return false;
                 }
             }
-            if(this.album != r.album)
-            {
-                if(this.album == null || r.album == null || !this.album.equals(r.album))
-                {
-                    return false;
-                }
-            }
-            if(this.year != r.year)
-            {
-                return false;
-            }
-            if(this.genre != r.genre)
-            {
-                if(this.genre == null || r.genre == null || !this.genre.equals(r.genre))
-                {
-                    return false;
-                }
-            }
             if(this.path != r.path)
             {
                 if(this.path == null || r.path == null || !this.path.equals(r.path))
@@ -110,9 +107,6 @@ public class Music implements java.lang.Cloneable,
         h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, "::MusicManager::Music");
         h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, title);
         h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, artist);
-        h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, album);
-        h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, year);
-        h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, genre);
         h_ = com.zeroc.IceInternal.HashUtil.hashAdd(h_, path);
         return h_;
     }
@@ -135,9 +129,6 @@ public class Music implements java.lang.Cloneable,
     {
         ostr.writeString(this.title);
         ostr.writeString(this.artist);
-        ostr.writeString(this.album);
-        ostr.writeInt(this.year);
-        ostr.writeString(this.genre);
         ostr.writeString(this.path);
     }
 
@@ -145,9 +136,6 @@ public class Music implements java.lang.Cloneable,
     {
         this.title = istr.readString();
         this.artist = istr.readString();
-        this.album = istr.readString();
-        this.year = istr.readInt();
-        this.genre = istr.readString();
         this.path = istr.readString();
     }
 
@@ -204,5 +192,5 @@ public class Music implements java.lang.Cloneable,
     private static final Music _nullMarshalValue = new Music();
 
     /** @hidden */
-    public static final long serialVersionUID = 749585919L;
+    public static final long serialVersionUID = -1633270597L;
 }

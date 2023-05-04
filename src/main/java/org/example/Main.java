@@ -15,13 +15,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        File musicDirectory = new File("./Musiques");
-        File[] musicFiles = musicDirectory.listFiles();
 
-        assert musicFiles != null;
-        for (File file : musicFiles) {
-            System.out.println(file.getName());
-        }
 
 
 

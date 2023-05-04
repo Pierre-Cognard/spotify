@@ -1,10 +1,11 @@
+
 module MusicManager {
+
+    sequence<byte> filecontent;
+
     struct Music {
         string title;
         string artist;
-        string album;
-        int year;
-        string genre;
         string path;
     };
 
@@ -13,5 +14,8 @@ module MusicManager {
         bool addMusic(Music music);
         bool removeMusic(string title, string artist);
         bool modifyMusic(Music music);
+        string getMusicStream(Music music);
+        void getMusicList();
+        void stopMusic();
     };
 };
