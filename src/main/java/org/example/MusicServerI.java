@@ -11,8 +11,9 @@ import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MusicServerI implements MusicServer {
 
@@ -60,9 +61,28 @@ public class MusicServerI implements MusicServer {
 
     @Override
     public boolean removeMusic(String title, String artist, Current current) {
-        System.out.println("Client connected: " + current.con.toString());
-        return false;
+
+        File musicDirectory = new File("./Musiques");
+        File[] musicFiles = musicDirectory.listFiles();
+        File fileToDelete = null;
+
+        assert musicFiles != null;
+        for (File file : musicFiles){
+            if (file.getName().contains(title) && file.getName().contains(artist)){
+                fileToDelete = file;
+            }
+        }
+
+        assert fileToDelete != null;
+        if (fileToDelete.delete()) {
+            System.out.println("Fichier supprimé : " + fileToDelete.getName());
+            return true;
+        } else {
+            System.out.println("Impossible de supprimer le fichier : " + fileToDelete.getName());
+            return false;
+        }
     }
+
 
     @Override
     public boolean modifyMusic(Music music, Current current) {
@@ -85,15 +105,18 @@ public class MusicServerI implements MusicServer {
         String[] mediaOptions = {
                 ":sout=#rtp{sdp=rtsp://:8554/" + music.getTitle() + "}",
                 ":sout-all",
-                ":sout-keep"
+                ":sout-keep",
+                ":no-sout-rtp-sap",
+                ":no-sout-standard-sap"
         };
 
         // Ajoutez un écouteur pour détecter quand le média a fini de jouer
         mediaPlayer.events().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
             @Override
             public void finished(MediaPlayer mediaPlayer) {
-                mediaPlayer.release();
-                mediaPlayerFactory.release();
+                System.out.println("FIN DE LA MUSIQUE");
+                //mediaPlayer.release();
+                //mediaPlayerFactory.release();
             }
 
             @Override
@@ -130,10 +153,54 @@ public class MusicServerI implements MusicServer {
         //System.out.println("musicsList :"+musicsList);
     }
 
+
     @Override
-    public void stopMusic(Current current) {
-        mediaPlayer.release();
-        mediaPlayerFactory.release();
+    public boolean uploadMusic(String title, String artist, String path, Current current) {
+        try {
+            // Ouvrir le fichier sur le disque dur du client
+            FileInputStream fileInputStream = new FileInputStream(path);
+
+            // Lire le contenu du fichier dans un tableau de bytes
+            byte[] fileContent = fileInputStream.readAllBytes();
+
+            try {
+                String filename = "Musiques/"+title + " - " + artist + ".mp3";
+                File file = new File(filename);
+                boolean created = file.createNewFile();
+                if (!created) {
+                    System.err.println("Failed to create file " + filename);
+                    return false;
+                }
+
+                FileOutputStream out = new FileOutputStream(file);
+                out.write(fileContent);
+                out.close();
+                System.out.println("Fichier crée: " + filename);
+                return true;
+            } catch (IOException ex) {
+                System.err.println("Failed to create file : " + ex.getMessage());
+                return false;
+            }
+        } catch (IOException e) {
+            System.err.println("Error uploading music: " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public Music[] getMusics(Current current) {
+        File musicDirectory = new File("./Musiques");
+        File[] musicFiles = musicDirectory.listFiles();
+
+        Music[] musics = new Music[musicFiles.length];
+
+        for (int i = 0; i < musics.length; i++) {
+            String titre = musicFiles[i].getName().replaceFirst("[.][^.]+$", "").split(" - ")[0];
+            String artiste = musicFiles[i].getName().replaceFirst("[.][^.]+$", "").split(" - ")[1];
+            musics[i] = new Music(titre,artiste,musicFiles[i].getPath());;
+        }
+
+        return musics;
     }
 
 

@@ -22,8 +22,13 @@ public class Music implements java.lang.Cloneable,
 
     public String artist;
 
-    public String getTitle() {
-        return title;
+    public String path;
+
+    public Music()
+    {
+        this.title = "";
+        this.artist = "";
+        this.path = "";
     }
 
     @Override
@@ -35,21 +40,16 @@ public class Music implements java.lang.Cloneable,
                 '}';
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public String getArtist() {
         return artist;
     }
 
     public String getPath() {
         return path;
-    }
-
-    public String path;
-
-    public Music()
-    {
-        this.title = "";
-        this.artist = "";
-        this.path = "";
     }
 
     public Music(String title, String artist, String path)

@@ -1,13 +1,15 @@
 
 module MusicManager {
 
-    sequence<byte> filecontent;
 
     struct Music {
         string title;
         string artist;
         string path;
     };
+
+    sequence<byte> filecontent;
+    sequence<Music> arrayMusic;
 
     interface MusicServer {
         Music searchMusic(string title, string artist);
@@ -16,6 +18,7 @@ module MusicManager {
         bool modifyMusic(Music music);
         string getMusicStream(Music music);
         void getMusicList();
-        void stopMusic();
+        bool uploadMusic(string title, string artist, string path);
+        arrayMusic getMusics();
     };
 };

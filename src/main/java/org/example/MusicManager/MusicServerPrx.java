@@ -254,24 +254,68 @@ public interface MusicServerPrx extends com.zeroc.Ice.ObjectPrx
         return f;
     }
 
-    default void stopMusic()
+    default boolean uploadMusic(String title, String artist, String path)
     {
-        stopMusic(com.zeroc.Ice.ObjectPrx.noExplicitContext);
+        return uploadMusic(title, artist, path, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default void stopMusic(java.util.Map<String, String> context)
+    default boolean uploadMusic(String title, String artist, String path, java.util.Map<String, String> context)
     {
-        _iceI_stopMusicAsync(context, true).waitForResponse();
+        return _iceI_uploadMusicAsync(title, artist, path, context, true).waitForResponse();
     }
 
-    default java.util.concurrent.CompletableFuture<Void> stopMusicAsync()
+    default java.util.concurrent.CompletableFuture<java.lang.Boolean> uploadMusicAsync(String title, String artist, String path)
     {
-        return _iceI_stopMusicAsync(com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+        return _iceI_uploadMusicAsync(title, artist, path, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<Void> stopMusicAsync(java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<java.lang.Boolean> uploadMusicAsync(String title, String artist, String path, java.util.Map<String, String> context)
     {
-        return _iceI_stopMusicAsync(context, false);
+        return _iceI_uploadMusicAsync(title, artist, path, context, false);
+    }
+
+    /**
+     * @hidden
+     * @param iceP_title -
+     * @param iceP_artist -
+     * @param iceP_path -
+     * @param context -
+     * @param sync -
+     * @return -
+     **/
+    default com.zeroc.IceInternal.OutgoingAsync<java.lang.Boolean> _iceI_uploadMusicAsync(String iceP_title, String iceP_artist, String iceP_path, java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<java.lang.Boolean> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "uploadMusic", null, sync, null);
+        f.invoke(true, context, null, ostr -> {
+                     ostr.writeString(iceP_title);
+                     ostr.writeString(iceP_artist);
+                     ostr.writeString(iceP_path);
+                 }, istr -> {
+                     boolean ret;
+                     ret = istr.readBool();
+                     return ret;
+                 });
+        return f;
+    }
+
+    default Music[] getMusics()
+    {
+        return getMusics(com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default Music[] getMusics(java.util.Map<String, String> context)
+    {
+        return _iceI_getMusicsAsync(context, true).waitForResponse();
+    }
+
+    default java.util.concurrent.CompletableFuture<Music[]> getMusicsAsync()
+    {
+        return _iceI_getMusicsAsync(com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<Music[]> getMusicsAsync(java.util.Map<String, String> context)
+    {
+        return _iceI_getMusicsAsync(context, false);
     }
 
     /**
@@ -280,10 +324,14 @@ public interface MusicServerPrx extends com.zeroc.Ice.ObjectPrx
      * @param sync -
      * @return -
      **/
-    default com.zeroc.IceInternal.OutgoingAsync<Void> _iceI_stopMusicAsync(java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<Music[]> _iceI_getMusicsAsync(java.util.Map<String, String> context, boolean sync)
     {
-        com.zeroc.IceInternal.OutgoingAsync<Void> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "stopMusic", null, sync, null);
-        f.invoke(false, context, null, null, null);
+        com.zeroc.IceInternal.OutgoingAsync<Music[]> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getMusics", null, sync, null);
+        f.invoke(true, context, null, null, istr -> {
+                     Music[] ret;
+                     ret = arrayMusicHelper.read(istr);
+                     return ret;
+                 });
         return f;
     }
 
