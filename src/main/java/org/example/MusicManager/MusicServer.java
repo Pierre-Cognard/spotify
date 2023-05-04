@@ -15,6 +15,8 @@
 
 package org.example.MusicManager;
 
+import java.util.ArrayList;
+
 public interface MusicServer extends com.zeroc.Ice.Object
 {
     Music searchMusic(String title, String artist, com.zeroc.Ice.Current current);
@@ -24,6 +26,9 @@ public interface MusicServer extends com.zeroc.Ice.Object
     boolean removeMusic(String title, String artist, com.zeroc.Ice.Current current);
 
     boolean modifyMusic(Music music, com.zeroc.Ice.Current current);
+
+    String getMusicStream(String title, String artist);
+    ArrayList<Music> musicList();
 
     /** @hidden */
     static final String[] _iceIds =
