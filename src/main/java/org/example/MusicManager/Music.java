@@ -31,15 +31,6 @@ public class Music implements java.lang.Cloneable,
         this.path = "";
     }
 
-    @Override
-    public String toString() {
-        return "Music{" +
-                "title='" + title + '\'' +
-                ", artist='" + artist + '\'' +
-                ", path='" + path + '\'' +
-                '}';
-    }
-
     public String getTitle() {
         return title;
     }
@@ -50,6 +41,15 @@ public class Music implements java.lang.Cloneable,
 
     public String getPath() {
         return path;
+    }
+
+    @Override
+    public String toString() {
+        return "Music{" +
+                "title='" + title + '\'' +
+                ", artist='" + artist + '\'' +
+                ", path='" + path + '\'' +
+                '}';
     }
 
     public Music(String title, String artist, String path)

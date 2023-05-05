@@ -15,7 +15,7 @@ module MusicManager {
         Music searchMusic(string title, string artist);
         bool addMusic(Music music);
         bool removeMusic(string title, string artist);
-        bool modifyMusic(Music music);
+        bool modifyMusic(Music music, string title, string artist);
         string getMusicStream(Music music);
         void getMusicList();
         bool uploadMusic(string title, string artist, string path);

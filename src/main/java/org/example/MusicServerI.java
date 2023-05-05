@@ -29,28 +29,28 @@ public class MusicServerI implements MusicServer {
         musicsList = new ArrayList<Music>();
         this.getMusicList(current); // update musics
 
-        Music s = null;
+        Music music = null;
 
         if (title.length() != 0){
             for (Music m : musicsList){
-                if (m.getTitle().equals(title)){
+                if (m.getTitle().toLowerCase().contains(title.toLowerCase())){
                     //System.out.println("musique :"+ m);
-                    s = m;
+                    music = m;
                 }
             }
         }
         else if (artist.length() != 0){
             for (Music m : musicsList){
-                if (m.getArtist().equals(artist)){
+                if (m.getArtist().toLowerCase().contains(artist.toLowerCase())){
                     //System.out.println("musique :"+ m);
-                    s = m;
+                    music = m;
                 }
             }
         }
         else{
-            return s;
+            return music;
         }
-        return s;
+        return music;
     }
 
     @Override
@@ -83,17 +83,27 @@ public class MusicServerI implements MusicServer {
         }
     }
 
-
     @Override
-    public boolean modifyMusic(Music music, Current current) {
+    public boolean modifyMusic(Music music, String title, String artist, Current current) {
         System.out.println("Client connected: " + current.con.toString());
-        return false;
+
+        File oldFile = new File(music.getPath());
+
+        // Créez un objet File pour le nouveau nom de fichier
+        File newFile = new File("./Musiques/"+title+" - "+artist+".mp3");
+
+        // Renommez le fichier
+        if (oldFile.renameTo(newFile)) {
+            System.out.println("Renaming successful");
+            return true;
+        } else {
+            System.out.println("Renaming failed");
+            return false;
+        }
     }
 
     @Override
     public String getMusicStream(Music music, Current current) {
-        // Assurez-vous que l'emplacement de votre installation VLC est correct.
-        // Vous pouvez également définir la variable d'environnement VLC_PLUGIN_PATH pour éviter cette étape.
         String vlcPath = "C:\\Program Files\\VideoLAN\\VLC";
         System.setProperty("jna.library.path", vlcPath);
 
@@ -140,13 +150,11 @@ public class MusicServerI implements MusicServer {
         File musicDirectory = new File("./Musiques");
         File[] musicFiles = musicDirectory.listFiles();
 
-        String list = "";
         assert musicFiles != null;
         for (File file : musicFiles) {
             //System.out.println(file.getName());
             String titre = file.getName().replaceFirst("[.][^.]+$", "").split(" - ")[0];
             String artiste = file.getName().replaceFirst("[.][^.]+$", "").split(" - ")[1];
-            list += file.getName().replaceFirst("[.][^.]+$", "") + ";";
             Music m = new Music(titre,artiste,file.getPath());
             musicsList.add(m);
         }
@@ -231,7 +239,6 @@ public class MusicServerI implements MusicServer {
                 communicator.destroy();
             }
         }
-
         return 0;
     }
 }

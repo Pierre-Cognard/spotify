@@ -141,38 +141,42 @@ public interface MusicServerPrx extends com.zeroc.Ice.ObjectPrx
         return f;
     }
 
-    default boolean modifyMusic(Music music)
+    default boolean modifyMusic(Music music, String title, String artist)
     {
-        return modifyMusic(music, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+        return modifyMusic(music, title, artist, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default boolean modifyMusic(Music music, java.util.Map<String, String> context)
+    default boolean modifyMusic(Music music, String title, String artist, java.util.Map<String, String> context)
     {
-        return _iceI_modifyMusicAsync(music, context, true).waitForResponse();
+        return _iceI_modifyMusicAsync(music, title, artist, context, true).waitForResponse();
     }
 
-    default java.util.concurrent.CompletableFuture<java.lang.Boolean> modifyMusicAsync(Music music)
+    default java.util.concurrent.CompletableFuture<java.lang.Boolean> modifyMusicAsync(Music music, String title, String artist)
     {
-        return _iceI_modifyMusicAsync(music, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+        return _iceI_modifyMusicAsync(music, title, artist, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<java.lang.Boolean> modifyMusicAsync(Music music, java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<java.lang.Boolean> modifyMusicAsync(Music music, String title, String artist, java.util.Map<String, String> context)
     {
-        return _iceI_modifyMusicAsync(music, context, false);
+        return _iceI_modifyMusicAsync(music, title, artist, context, false);
     }
 
     /**
      * @hidden
      * @param iceP_music -
+     * @param iceP_title -
+     * @param iceP_artist -
      * @param context -
      * @param sync -
      * @return -
      **/
-    default com.zeroc.IceInternal.OutgoingAsync<java.lang.Boolean> _iceI_modifyMusicAsync(Music iceP_music, java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<java.lang.Boolean> _iceI_modifyMusicAsync(Music iceP_music, String iceP_title, String iceP_artist, java.util.Map<String, String> context, boolean sync)
     {
         com.zeroc.IceInternal.OutgoingAsync<java.lang.Boolean> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "modifyMusic", null, sync, null);
         f.invoke(true, context, null, ostr -> {
                      Music.ice_write(ostr, iceP_music);
+                     ostr.writeString(iceP_title);
+                     ostr.writeString(iceP_artist);
                  }, istr -> {
                      boolean ret;
                      ret = istr.readBool();

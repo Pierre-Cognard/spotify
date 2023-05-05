@@ -92,10 +92,27 @@ public class MusicClientApp {
                     }
                     case 3 -> {
                         System.out.println("Modifier une musique :");
+                        int id;
+                        Music[] musics = musicServer.getMusics();
 
-                        Music musicToUpdate = new Music("Updated Music", "Updated Artist", "/path/to/music");
-                        boolean updated = musicServer.modifyMusic(musicToUpdate);
-                        System.out.println("Updated music: " + updated);
+                        for (int i = 0; i < musics.length; i++) {
+                            System.out.println(i + 1 + ". " + musics[i].getTitle() + " - " + musics[i].getArtist());
+                        }
+                        System.out.print("\nVeuillez choisir un numéro : ");
+                        id = scanner.nextInt();
+
+                        System.out.print("Tire : ");
+                        String titre = scanner.next();
+
+                        System.out.print("Artiste : ");
+                        String artiste = scanner.next();
+
+                        boolean modified = musicServer.modifyMusic(musics[id-1], titre, artiste);
+                        if (modified) {
+                            System.out.println("Musique modifiée avec succès !");
+                        } else {
+                            System.out.println("Erreur lors de la modification de la musique");
+                        }
                     }
                     case 4 -> {
                         System.out.println("Rechercher une musique :");
@@ -120,7 +137,9 @@ public class MusicClientApp {
                             }
                         }
                         if (musicSearch.getArtist().length() != 0) {
-                            System.out.println("Musique trouvée : " + musicSearch);
+                            System.out.println("Musique trouvée : ");
+                            System.out.println("Artiste : "+musicSearch.getArtist());
+                            System.out.println("Titre : "+musicSearch.getTitle());
                             String url = musicServer.getMusicStream(musicSearch);
                             System.out.println("url : " + url);
                             playing = true;
@@ -148,8 +167,6 @@ public class MusicClientApp {
     }
 
     public static MediaPlayer playRtspStream(String rtspUrl) {
-        // Assurez-vous que l'emplacement de votre installation VLC est correct.
-        // Vous pouvez également définir la variable d'environnement VLC_PLUGIN_PATH pour éviter cette étape.
         String vlcPath = "C:\\Program Files\\VideoLAN\\VLC";
         System.setProperty("jna.library.path", vlcPath);
 
@@ -182,7 +199,6 @@ public class MusicClientApp {
                     playing = false;
                     break;
                 }
-
             }
             else{
                 System.out.println("1. Mettre en pause la lecture");

@@ -23,7 +23,7 @@ public interface MusicServer extends com.zeroc.Ice.Object
 
     boolean removeMusic(String title, String artist, com.zeroc.Ice.Current current);
 
-    boolean modifyMusic(Music music, com.zeroc.Ice.Current current);
+    boolean modifyMusic(Music music, String title, String artist, com.zeroc.Ice.Current current);
 
     String getMusicStream(Music music, com.zeroc.Ice.Current current);
 
@@ -136,9 +136,13 @@ public interface MusicServer extends com.zeroc.Ice.Object
         com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
         com.zeroc.Ice.InputStream istr = inS.startReadParams();
         Music iceP_music;
+        String iceP_title;
+        String iceP_artist;
         iceP_music = Music.ice_read(istr);
+        iceP_title = istr.readString();
+        iceP_artist = istr.readString();
         inS.endReadParams();
-        boolean ret = obj.modifyMusic(iceP_music, current);
+        boolean ret = obj.modifyMusic(iceP_music, iceP_title, iceP_artist, current);
         com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
         ostr.writeBool(ret);
         inS.endWriteParams(ostr);
