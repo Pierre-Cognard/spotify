@@ -1,0 +1,24 @@
+<icegrid>
+    <application name="MusicApp">
+        <server-template id="MusicServerTemplate">
+            <parameter name="index" value="1"/>
+            <server id="MusicServer-${index}" exe="MusicServerI" activation="on-demand">
+                <adapter name="MusicServerAdapter" endpoints="default" id="MusicServerIdentity${index}"/>
+            </server>
+        </server-template>
+
+        <node name="Node1">
+            <server-instance template="MusicServerTemplate" index="1"/>
+            <server-instance template="MusicServerTemplate" index="2"/>
+        </node>
+
+        <node name="Node2">
+            <server-instance template="MusicServerTemplate" index="3"/>
+            <server-instance template="MusicServerTemplate" index="4"/>
+        </node>
+
+        <node name="Node3">
+            <server-instance template="MusicServerTemplate" index="5"/>
+        </node>
+    </application>
+</icegrid>

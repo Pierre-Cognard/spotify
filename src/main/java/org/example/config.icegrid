@@ -1,0 +1,20 @@
+# Fichier de configuration pour IceGrid Registry
+
+# Les points de terminaison du registre, à remplacer par vos valeurs
+IceGrid.Registry.Client.Endpoints=tcp -h localhost -p 4061
+IceGrid.Registry.Server.Endpoints=tcp -h localhost -p 4062
+IceGrid.Registry.Internal.Endpoints=tcp -h localhost -p 4063
+
+# Activation des journaux détaillés
+IceGrid.Registry.Trace.Application=1
+IceGrid.Registry.Trace.Server=1
+IceGrid.Registry.Trace.Node=1
+IceGrid.Registry.Trace.Adapter=1
+IceGrid.Registry.Trace.Object=1
+IceGrid.Registry.AdminPermissionsVerifier=IceGrid/NullPermissionsVerifier
+
+# Activation de la persistance des sessions
+IceGrid.Registry.SessionTimeout=60
+
+# Chemin vers la base de données LMDB
+IceGrid.Registry.LMDB.Path=db/registry
